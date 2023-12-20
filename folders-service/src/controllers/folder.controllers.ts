@@ -58,7 +58,7 @@ export const updateFolderContent = async (req: Request, res: Response): Promise<
   const { folderId, comicId } = req.params;
 
   try {
-    const existedFolder = await FolderService.get(folderId);
+    const existedFolder = await FolderService.getWithComics(folderId);
 
     if (!existedFolder) {
       return CustomResponse.notFound(res, {

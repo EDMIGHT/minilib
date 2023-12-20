@@ -25,7 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang='en' className='dark'>
       <body className={cn('min-h-screen bg-background font-sans antialiased', font.variable)}>
         <TooltipProvider>
-          <main className='container py-4'>{children}</main>
+          {children}
           <Toaster />
         </TooltipProvider>
       </body>

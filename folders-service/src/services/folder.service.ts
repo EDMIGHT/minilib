@@ -30,6 +30,16 @@ export class FolderService {
       },
     });
   }
+  public static async getWithComics(id: string): Promise<IFolderWithComics | null> {
+    return prisma.folder.findFirst({
+      where: {
+        id,
+      },
+      include: {
+        comics: true,
+      },
+    });
+  }
   public static async getAll(): Promise<IAllFolderWithComics[]> {
     return prisma.folder.findMany({
       orderBy: {

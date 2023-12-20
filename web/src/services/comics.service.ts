@@ -5,7 +5,7 @@ import { IPagination } from '@/types/request';
 import { IResponseComicCatalog } from '@/types/response';
 
 export class ComicsService {
-  public static async getAll({ page = 1, limit = 12 }: IPagination) {
+  public static async getAll({ page = 1, limit = 6 }: IPagination) {
     const { data } = await api.get<IResponseComicCatalog>(
       `/comics?page=${page}&limit=${limit}`
     );

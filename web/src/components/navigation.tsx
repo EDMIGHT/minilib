@@ -15,7 +15,7 @@ export const Navigation: FC = () => {
       defaultValue={'library'}
       className='flex justify-center'
     >
-      <TabsList className=' h-full w-full lg:w-1/2'>
+      <TabsList className=' h-full w-full lg:w-1/2 xl:w-1/3'>
         <Link href='/' className='w-full hover:brightness-75'>
           <TabsTrigger value='library' className='w-full text-xl'>
             Library
