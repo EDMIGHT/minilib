@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Author {
+  id    String  @id @default(uuid())
+  name  String
+  Comic Comic[]
+}
+
+model Genre {
+  id    String  @id @default(uuid())
+  name  String  @unique
+  Comic Comic[]
+}
+
+model Comic {
+  id        String   @id @default(uuid())
+  title     String
+  desc      String
+  edition   String?
+  img       String
+  year      Int
+  rating    Float?
+  createdAt DateTime @default(now()) @map("created_at")
+  authors   Author[]
+  genres    Genre[]
+  Folder    Folder[]
+}
+
+model Folder {
+  id        String   @id @default(uuid())
+  title     String
+  updatedAt DateTime @updatedAt @map("updated_at")
+  comics    Comic[]
+}
