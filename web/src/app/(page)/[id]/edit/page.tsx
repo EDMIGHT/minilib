@@ -3,7 +3,9 @@ import { FC } from 'react';
 
 import { EditComicForm } from '@/components/forms/edit-comic-form';
 import { Breadcrumbs } from '@/components/ui/breadcrumbs';
+import { AuthorsService } from '@/services/authors.service';
 import { ComicsService } from '@/services/comics.service';
+import { GenresService } from '@/services/genres.service';
 
 type PageProps = {
   params: {
@@ -13,6 +15,8 @@ type PageProps = {
 
 const Page: FC<PageProps> = async ({ params: { id } }) => {
   const comic = await ComicsService.get(id);
+  const genres = await GenresService.getAll();
+  const authors = await AuthorsService.getAll();
 
   if (!comic) {
     return notFound();
@@ -38,7 +42,7 @@ const Page: FC<PageProps> = async ({ params: { id } }) => {
           },
         ]}
       />
-      <EditComicForm {...comic} />
+      <EditComicForm {...comic} allGenres={genres} allAuthors={authors} />
     </div>
   );
 };

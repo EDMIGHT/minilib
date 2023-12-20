@@ -3,7 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { FC, useCallback, useTransition } from 'react';
 
-import { Comic } from '@/components/comic';
+import { ComicsList } from '@/components/comics-list';
 import { Pagination } from '@/components/pagination';
 import { IResponseComicCatalog } from '@/types/response';
 
@@ -30,13 +30,7 @@ export const ComicsSection: FC<IResponseComicCatalog> = ({
 
   return (
     <section className='space-y-2'>
-      <ul className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
-        {comics.map((comic) => (
-          <li key={comic.id}>
-            <Comic {...comic} />
-          </li>
-        ))}
-      </ul>
+      <ComicsList comics={comics} />
       {totalPages > 1 && (
         <Pagination
           currentPage={currentPage}

@@ -30,7 +30,7 @@ model Comic {
   createdAt DateTime @default(now()) @map("created_at")
   authors   Author[]
   genres    Genre[]
-  Folder    Folder[]
+  folders   Folder[]
 }
 
 model Folder {

@@ -1,4 +1,5 @@
 import { PlusIcon } from '@radix-ui/react-icons';
+import { Metadata } from 'next';
 import Link from 'next/link';
 import { FC } from 'react';
 
@@ -10,12 +11,16 @@ type PageProps = {
   searchParams: IPagination;
 };
 
+export const metadata: Metadata = {
+  title: 'Library',
+};
+
 export const Page: FC<PageProps> = async ({ searchParams: { page, limit } }) => {
   const catalog = await ComicsService.getAll({ page, limit });
 
   return (
     <div className='space-y-4 py-4'>
-      <div className='flex items-center justify-between gap-2'>
+      <div className='flex items-center justify-between gap-2 px-2'>
         <div>
           <h1 className='text-2xl font-bold md:text-3xl'>Comic Library</h1>
           <p className='text-base text-muted-foreground sm:text-lg'>

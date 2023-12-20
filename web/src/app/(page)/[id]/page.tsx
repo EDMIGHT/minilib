@@ -3,10 +3,13 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { FC } from 'react';
 
+import { AttributesList } from '@/components/attributes-list';
 import { ComicControl } from '@/components/comic-control';
+import { ComicRatingControl } from '@/components/comic-rating-control';
 import { Breadcrumbs } from '@/components/ui/breadcrumbs';
 import { Separator } from '@/components/ui/separator';
 import { ComicsService } from '@/services/comics.service';
+import { FoldersService } from '@/services/folders.service';
 
 type PageProps = {
   params: {
@@ -29,12 +32,24 @@ export async function generateMetadata({ params: { id } }: PageProps): Promise<M
 
 const Page: FC<PageProps> = async ({ params: { id } }) => {
   const comic = await ComicsService.get(id);
+  const folders = await FoldersService.getAll();
 
   if (!comic) {
     return notFound();
   }
 
-  const { id: comicId, img, title, desc, year, rating, issueNumber, edition } = comic;
+  const {
+    id: comicId,
+    img,
+    title,
+    desc,
+    year,
+    rating,
+    edition,
+    folders: comicFolders,
+    authors,
+    genres,
+  } = comic;
 
   return (
     <div className='space-y-4'>
@@ -64,7 +79,10 @@ const Page: FC<PageProps> = async ({ params: { id } }) => {
           />
         </div>
         <div className='flex w-full flex-col gap-4  p-2'>
-          <ComicControl id={id} />
+          <div className='flex justify-between gap-1'>
+            <ComicRatingControl id={id} rating={rating} />
+            <ComicControl id={id} allFolders={folders} comicFolders={comicFolders} />
+          </div>
           <h1 className='text-2xl font-bold md:text-3xl'>{title}</h1>
           <p className='text-base text-muted-foreground sm:text-lg'>{desc}</p>
           <Separator />
@@ -72,14 +90,17 @@ const Page: FC<PageProps> = async ({ params: { id } }) => {
             <span className='font-semibold'>Year:</span> {year}
           </p>
           <p className='text-xl'>
-            <span className='font-semibold'>Rating:</span> {rating || 'not found'}
-          </p>
-          <p className='text-xl'>
-            <span className='font-semibold'>Issue number:</span> {issueNumber || 'not found'}
-          </p>
-          <p className='text-xl'>
             <span className='font-semibold'>Edition:</span> {edition || 'not found'}
           </p>
+          <Separator />
+          <div className='space-y-1'>
+            <h3 className='text-xl font-semibold'>Genres</h3>
+            <AttributesList items={genres} />
+          </div>
+          <div className='space-y-1'>
+            <h3 className='text-xl font-semibold'>Authors</h3>
+            <AttributesList items={authors} />
+          </div>
         </div>
       </div>
     </div>

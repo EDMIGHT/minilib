@@ -1,7 +1,7 @@
-import { IComic } from '@/types/comics';
+import { IComicWithAttributes } from '@/types/comics';
 
 export type IResponseComicCatalog = {
-  comics: IComic[];
+  comics: IComicWithAttributes[];
   currentPage: number;
   totalPages: number;
 };

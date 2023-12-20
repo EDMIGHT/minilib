@@ -21,7 +21,12 @@ export class FolderService {
         id,
       },
       include: {
-        comics: true,
+        comics: {
+          include: {
+            genres: true,
+            authors: true,
+          },
+        },
       },
     });
   }

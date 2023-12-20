@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
 import { Toaster } from 'sonner';
 
+import { TooltipProvider } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 
 const font = Poppins({
@@ -23,8 +24,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang='en' className='dark'>
       <body className={cn('min-h-screen bg-background font-sans antialiased', font.variable)}>
-        <main className='container py-4'>{children}</main>
-        <Toaster />
+        <TooltipProvider>
+          <main className='container py-4'>{children}</main>
+          <Toaster />
+        </TooltipProvider>
       </body>
     </html>
   );

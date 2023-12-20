@@ -48,9 +48,9 @@ const comicsSeed = async (): Promise<void> => {
           data: {
             title: faker.music.songName(),
             desc: faker.lorem.sentences({ min: 1, max: 2 }),
-            issueNumber: faker.number.int({ min: 0, max: 100 }),
-            rating: faker.number.float({
-              precision: 0.1,
+            rating: faker.number.int({
+              min: 1,
+              max: 10,
             }),
             year: faker.number.int({
               min: 1960,

@@ -20,15 +20,22 @@ model Genre {
 }
 
 model Comic {
-  id          String   @id @default(uuid())
-  title       String
-  desc        String
-  edition     String?
-  img         String
-  authors     Author[]
-  genres      Genre[]
-  year        Int
-  issueNumber Int      @default(0)
-  rating      Float?
-  createdAt   DateTime @default(now())
+  id        String   @id @default(uuid())
+  title     String
+  desc      String
+  edition   String?
+  img       String
+  year      Int
+  rating    Float?
+  createdAt DateTime @default(now()) @map("created_at")
+  authors   Author[]
+  genres    Genre[]
+  folders   Folder[]
+}
+
+model Folder {
+  id        String   @id @default(uuid())
+  title     String
+  updatedAt DateTime @updatedAt @map("updated_at")
+  comics    Comic[]
 }

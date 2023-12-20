@@ -22,6 +22,12 @@ export const commonComicSchema = z.object({
     .min(0, 'the rating cannot be less than 0')
     .max(10, 'the rating cannot be more than 10')
     .optional(),
+  genres: z.array(z.string()).refine((value) => value.some((item) => item), {
+    message: 'You have to select at least one genre',
+  }),
+  authors: z.array(z.string()).refine((value) => value.some((item) => item), {
+    message: 'You have to select at least one author',
+  }),
 });
 
 export type ICommonComicSchema = z.infer<typeof commonComicSchema>;

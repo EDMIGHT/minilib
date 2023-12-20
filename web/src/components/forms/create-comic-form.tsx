@@ -7,6 +7,7 @@ import { FC, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
+import { AttributesList } from '@/components/attributes-list';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -22,8 +23,15 @@ import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import { commonComicSchema, ICommonComicSchema } from '@/lib/validations/comic.validations';
 import { ComicsService } from '@/services/comics.service';
+import { IAuthor } from '@/types/author';
+import { IGenre } from '@/types/genres';
 
-export const CreateComicForm: FC = ({}) => {
+type ICreateComicFormProps = {
+  genres: IGenre[];
+  authors: IAuthor[];
+};
+
+export const CreateComicForm: FC<ICreateComicFormProps> = ({ authors, genres }) => {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -35,7 +43,8 @@ export const CreateComicForm: FC = ({}) => {
       year: 2023,
       edition: '',
       rating: 0,
-      issueNumber: 0,
+      genres: [],
+      authors: [],
     },
   });
 
@@ -68,7 +77,7 @@ export const CreateComicForm: FC = ({}) => {
           name='title'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Title</FormLabel>
+              <FormLabel isRequired>Title</FormLabel>
               <FormControl>
                 <Input placeholder='title..' {...field} />
               </FormControl>
@@ -81,7 +90,7 @@ export const CreateComicForm: FC = ({}) => {
           name='edition'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Edition</FormLabel>
+              <FormLabel isRequired>Edition</FormLabel>
               <FormControl>
                 <Input placeholder='edition..' {...field} />
               </FormControl>
@@ -94,7 +103,7 @@ export const CreateComicForm: FC = ({}) => {
           name='desc'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Description</FormLabel>
+              <FormLabel isRequired>Description</FormLabel>
               <FormControl>
                 <Textarea placeholder='description..' {...field} />
               </FormControl>
@@ -102,12 +111,9 @@ export const CreateComicForm: FC = ({}) => {
             </FormItem>
           )}
         />
-        <div className='grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3'>
+        <div className='grid grid-cols-1 gap-6 md:grid-cols-2 '>
           <FormItem>
-            <FormLabel
-              isRequired
-              className={cn(!!form.formState.errors.year && 'text-destructive')}
-            >
+            <FormLabel className={cn(!!form.formState.errors.year && 'text-destructive')}>
               Year
             </FormLabel>
             <FormControl>
@@ -124,30 +130,7 @@ export const CreateComicForm: FC = ({}) => {
             <UncontrolledFormMessage message={form.formState.errors.year?.message} />
           </FormItem>
           <FormItem>
-            <FormLabel
-              isRequired
-              className={cn(!!form.formState.errors.issueNumber && 'text-destructive')}
-            >
-              Issue Number
-            </FormLabel>
-            <FormControl>
-              <Input
-                aria-invalid={!!form.formState.errors.issueNumber}
-                type='number'
-                inputMode='numeric'
-                placeholder='enter number..'
-                {...form.register('issueNumber', {
-                  valueAsNumber: true,
-                })}
-              />
-            </FormControl>
-            <UncontrolledFormMessage message={form.formState.errors.issueNumber?.message} />
-          </FormItem>
-          <FormItem>
-            <FormLabel
-              isRequired
-              className={cn(!!form.formState.errors.rating && 'text-destructive')}
-            >
+            <FormLabel className={cn(!!form.formState.errors.rating && 'text-destructive')}>
               Rating
             </FormLabel>
             <FormControl>
@@ -164,6 +147,49 @@ export const CreateComicForm: FC = ({}) => {
             <UncontrolledFormMessage message={form.formState.errors.rating?.message} />
           </FormItem>
         </div>
+        <FormField
+          control={form.control}
+          name='genres'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel isRequired>Genres</FormLabel>
+              <AttributesList
+                items={genres}
+                activeGenres={field.value}
+                onClickItem={(gen) => {
+                  if (field.value?.some((val) => val === gen.id)) {
+                    return field.onChange(field.value.filter((val) => val !== gen.id));
+                  } else {
+                    return field.onChange([...field.value, gen.id]);
+                  }
+                }}
+              />
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name='authors'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel isRequired>Authors</FormLabel>
+              <AttributesList
+                items={authors}
+                activeGenres={field.value}
+                onClickItem={(author) => {
+                  if (field.value?.some((val) => val === author.id)) {
+                    return field.onChange(field.value.filter((val) => val !== author.id));
+                  } else {
+                    return field.onChange([...field.value, author.id]);
+                  }
+                }}
+              />
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <div className='flex justify-end gap-2'>
           <Button
             type='button'

@@ -2,8 +2,13 @@ import { FC } from 'react';
 
 import { CreateComicForm } from '@/components/forms/create-comic-form';
 import { Breadcrumbs } from '@/components/ui/breadcrumbs';
+import { AuthorsService } from '@/services/authors.service';
+import { GenresService } from '@/services/genres.service';
 
-const Page: FC = ({}) => {
+const Page: FC = async ({}) => {
+  const genres = await GenresService.getAll();
+  const authors = await AuthorsService.getAll();
+
   return (
     <div className='space-y-4'>
       <Breadcrumbs
@@ -18,7 +23,7 @@ const Page: FC = ({}) => {
           },
         ]}
       />
-      <CreateComicForm />
+      <CreateComicForm authors={authors} genres={genres} />
     </div>
   );
 };
